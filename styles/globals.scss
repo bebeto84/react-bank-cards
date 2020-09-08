@@ -1,0 +1,30 @@
+/* TODO: Move to styled-components */
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: circular-pro, Helvetica Neue, sans-serif;
+  width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+}
+#__next {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
