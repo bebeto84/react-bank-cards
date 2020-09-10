@@ -1,4 +1,6 @@
 export interface CardItem {
-    type: string;
-    number: string;
+  name: string;
+  number: string;
+  expiryDate: string;
+  cvc: string;
 }
