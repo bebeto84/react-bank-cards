@@ -42,7 +42,7 @@ const Background = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  z-index: -100;
+  z-index: -10;
 `;
 
 const Container = styled.div`
@@ -55,6 +55,12 @@ const Container = styled.div`
   display: flex;
   font-weight: bold;
   padding: ${CSS_SPACINGS.x5};
+  z-index: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+  :hover {
+    transform: rotateY(50deg);
+  }
 `;
 
 export default CardItemWrapper;

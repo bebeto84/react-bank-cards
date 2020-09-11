@@ -27,22 +27,35 @@ export function CardListContainer() {
   // TODO: use redux to manage `cards`
   const [cards, setCards] = useState(CARDS);
   const [modalOpened, setOpenModal] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
 
-  const closeDialog = () => setOpenModal(false);
+  const closeDialog = () =>  {
+    setSelectedCard(null); setOpenModal(false); 
+  }
+  
+  const addNewCard = () => setOpenModal(true);
+
+  const editCard = card => {
+    setOpenModal(true);
+    setSelectedCard(card);
+  }
 
   return (
     <>
+    <header>
       <Heading>Your cards</Heading>
       <p>Add, edit or delete your cards any time</p>
+    </header>
 
       <Container>
         {cards.map((card) => (
           <CardItemComponent
             {...card}
+            onEditClick={() => editCard(card)}
             key={card.number}
           ></CardItemComponent>
         ))}
-        <Button onClick={() => setOpenModal(true)}>
+        <Button onClick={addNewCard}>
           Add new card
         </Button>
       </Container>
@@ -53,9 +66,13 @@ export function CardListContainer() {
           <ModalContainer
             onClose={closeDialog}
             id={CARD_DETAILS_MODAL_ID}
-            title="Add your card details"
+            title={!!selectedCard ? "Edit you card":  "Add your card details"}
           >
-            <CardDetailsContainer></CardDetailsContainer>
+            <CardDetailsContainer item={selectedCard}>
+            <CardItemComponent
+              {...selectedCard}
+            ></CardItemComponent>
+            </CardDetailsContainer>
           </ModalContainer>
         ) : null}
       </AnimatePresence>
@@ -69,7 +86,7 @@ const Button = styled.button`
   background-color: ${CSS_COLORS.purple60};
   cursor: pointer;
 `;
-const Container = styled.div`
+const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;

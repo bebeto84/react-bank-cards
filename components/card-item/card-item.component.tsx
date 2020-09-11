@@ -9,14 +9,16 @@ import {
 import CardItemWrapper from './card-item.wrapper';
 import { spaceWordOnCharacters } from '@utils/string';
 
-const CardItemComponent = ({
-  name,
+interface ICardItemComponent extends CardItem{
+  onEditClick?: () => void;
+}
+const CardItemComponent = ({name,
   number,
   expiryDate,
-  cvc,
-}: CardItem) => {
-  const isVisa = number.startsWith('4');
+  cvc, onEditClick}: ICardItemComponent ) => {
 
+  const isVisa = number?.startsWith('4');
+  const isEditable = !!onEditClick;
   return (
     <CardItemWrapper isVisa={isVisa}>
       <Heading>
@@ -35,9 +37,9 @@ const CardItemComponent = ({
       <OwnerName>{name}</OwnerName>
       <Bottom>
         <CardNumber>
-          {spaceWordOnCharacters(number, 4)}
+          {number && spaceWordOnCharacters(number, 4)}
         </CardNumber>
-        <EditCardButton></EditCardButton>
+        {isEditable && <EditCardButton onClick={() => onEditClick()}></EditCardButton>}
       </Bottom>
     </CardItemWrapper>
   );

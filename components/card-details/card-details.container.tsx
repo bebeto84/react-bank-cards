@@ -6,9 +6,10 @@ export interface CardDetails {
   item?: CardItem;
 }
 
-export const CardDetailsContainer: FunctionComponent<CardDetails> = () => {
+export const CardDetailsContainer: FunctionComponent<CardDetails> = ({item, children}) => {
   return (
     <Container>
+      {children}
       <button>Confirm</button>
     </Container>
   );
