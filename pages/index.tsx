@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import { CardListContainer } from '../components/card-list/card-list.container';
 import styled from 'styled-components';
+import { CardsMainContainer } from 'views/cards/CardsMain.container';
 
 export default function Home() {
   return (
@@ -17,7 +17,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <CardListContainer></CardListContainer>
+        <CardsMainContainer></CardsMainContainer>
       </main>
 
       <footer>

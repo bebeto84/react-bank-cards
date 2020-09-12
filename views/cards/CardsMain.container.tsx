@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { CardItem } from '@sdk/cards/card-item.model';
-import { CardDetailsContainer } from '@components/card-details/card-details.container';
-import CardItemComponent from '@components/card-item/card-item.component';
 import styled from 'styled-components';
 import ModalContainer from '@components/modal/modal.container';
-import { CARD_DETAILS_MODAL_ID } from '@components/card-details/card-details.const';
 import { AnimatePresence } from 'framer-motion';
 import { CSS_COLORS } from '@styles/variables.styles';
+import CardItemContainer from './CardItem.container';
+import { CARD_DETAILS_MODAL_ID } from './cards.const';
+import CardDetailsContainer from './CardDetails.container';
 
 const CARDS: CardItem[] = [
   {
@@ -23,41 +23,40 @@ const CARDS: CardItem[] = [
   },
 ];
 
-export function CardListContainer() {
+export function CardsMainContainer() {
   // TODO: use redux to manage `cards`
   const [cards, setCards] = useState(CARDS);
   const [modalOpened, setOpenModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
-  const closeDialog = () =>  {
-    setSelectedCard(null); setOpenModal(false); 
-  }
-  
+  const closeDialog = () => {
+    setSelectedCard(null);
+    setOpenModal(false);
+  };
+
   const addNewCard = () => setOpenModal(true);
 
-  const editCard = card => {
+  const editCard = (card) => {
     setOpenModal(true);
     setSelectedCard(card);
-  }
+  };
 
   return (
     <>
-    <header>
-      <Heading>Your cards</Heading>
-      <p>Add, edit or delete your cards any time</p>
-    </header>
+      <header>
+        <Heading>Your cards</Heading>
+        <p>Add, edit or delete your cards any time</p>
+      </header>
 
       <Container>
         {cards.map((card) => (
-          <CardItemComponent
+          <CardItemContainer
             {...card}
             onEditClick={() => editCard(card)}
             key={card.number}
-          ></CardItemComponent>
+          ></CardItemContainer>
         ))}
-        <Button onClick={addNewCard}>
-          Add new card
-        </Button>
+        <Button onClick={addNewCard}>Add new card</Button>
       </Container>
 
       {/* TODO: Move AnimatePresence to a ModalProvider class and wrap the open/close logic */}
@@ -66,12 +65,16 @@ export function CardListContainer() {
           <ModalContainer
             onClose={closeDialog}
             id={CARD_DETAILS_MODAL_ID}
-            title={!!selectedCard ? "Edit you card":  "Add your card details"}
+            title={
+              !!selectedCard
+                ? 'Edit you card'
+                : 'Add your card details'
+            }
           >
             <CardDetailsContainer item={selectedCard}>
-            <CardItemComponent
-              {...selectedCard}
-            ></CardItemComponent>
+              <CardItemContainer
+                {...selectedCard}
+              ></CardItemContainer>
             </CardDetailsContainer>
           </ModalContainer>
         ) : null}

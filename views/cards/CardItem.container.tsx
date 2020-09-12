@@ -6,17 +6,20 @@ import {
   CSS_COLORS,
   CSS_FONT_SIZES,
 } from '@styles/variables.styles';
-import CardItemWrapper from './card-item.wrapper';
 import { spaceWordOnCharacters } from '@utils/string';
+import CardItemWrapper from './CardItem.wrapper';
 
-interface ICardItemComponent extends CardItem{
+interface ICardItemComponent extends CardItem {
   onEditClick?: () => void;
 }
-const CardItemComponent = ({name,
+
+const CardItemContainer = ({
+  name,
   number,
   expiryDate,
-  cvc, onEditClick}: ICardItemComponent ) => {
-
+  cvc,
+  onEditClick,
+}: ICardItemComponent) => {
   const isVisa = number?.startsWith('4');
   const isEditable = !!onEditClick;
   return (
@@ -39,7 +42,11 @@ const CardItemComponent = ({name,
         <CardNumber>
           {number && spaceWordOnCharacters(number, 4)}
         </CardNumber>
-        {isEditable && <EditCardButton onClick={() => onEditClick()}></EditCardButton>}
+        {isEditable && (
+          <EditCardButton
+            onClick={() => onEditClick()}
+          ></EditCardButton>
+        )}
       </Bottom>
     </CardItemWrapper>
   );
@@ -120,4 +127,4 @@ const EditCardButton = styled.button`
   }
 `;
 
-export default CardItemComponent;
+export default CardItemContainer;

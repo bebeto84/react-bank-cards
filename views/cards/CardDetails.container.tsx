@@ -6,7 +6,10 @@ export interface CardDetails {
   item?: CardItem;
 }
 
-export const CardDetailsContainer: FunctionComponent<CardDetails> = ({item, children}) => {
+const CardDetailsContainer: FunctionComponent<CardDetails> = ({
+  item,
+  children,
+}) => {
   return (
     <Container>
       {children}
@@ -21,3 +24,5 @@ const Container = styled.div`
   justify-content: center;
   padding: 2rem 3rem;
 `;
+
+export default CardDetailsContainer;

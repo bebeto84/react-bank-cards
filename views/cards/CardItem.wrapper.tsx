@@ -56,11 +56,6 @@ const Container = styled.div`
   font-weight: bold;
   padding: ${CSS_SPACINGS.x5};
   z-index: 0;
-  transform-style: preserve-3d;
-  transition: transform 0.5s;
-  :hover {
-    transform: rotateY(50deg);
-  }
 `;
 
 export default CardItemWrapper;
