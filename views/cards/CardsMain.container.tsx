@@ -7,6 +7,7 @@ import { CSS_COLORS } from '@styles/variables.styles';
 import CardItemContainer from './CardItem.container';
 import { CARD_DETAILS_MODAL_ID } from './cards.const';
 import CardDetailsContainer from './CardDetails.container';
+import { Button } from '@components/button/Button.component';
 
 const CARDS: CardItem[] = [
   {
@@ -71,11 +72,9 @@ export function CardsMainContainer() {
                 : 'Add your card details'
             }
           >
-            <CardDetailsContainer item={selectedCard}>
-              <CardItemContainer
-                {...selectedCard}
-              ></CardItemContainer>
-            </CardDetailsContainer>
+            <CardDetailsContainer
+              {...selectedCard}
+            ></CardDetailsContainer>
           </ModalContainer>
         ) : null}
       </AnimatePresence>
@@ -83,12 +82,6 @@ export function CardsMainContainer() {
   );
 }
 
-const Button = styled.button`
-  padding: 10px;
-  width: 90%;
-  background-color: ${CSS_COLORS.purple60};
-  cursor: pointer;
-`;
 const Container = styled.section`
   display: flex;
   flex-direction: column;

@@ -1,27 +1,27 @@
 import styled from 'styled-components';
 import {
-  CSS_COLORS,
   CSS_BORDER_RADIUS,
   CSS_SPACINGS,
 } from '@styles/variables.styles';
 import { FunctionComponent } from 'react';
+import { useCardColor } from 'hooks/useCardColor';
 
 const CardItemWrapper: FunctionComponent<{
   isVisa: boolean;
-}> = ({ isVisa, children }) => (
-  <Container>
-    <Background isVisa={isVisa}>
-      <CardItemSvgImage
-        fill={
-          isVisa
-            ? CSS_COLORS.purple90
-            : CSS_COLORS.turquoise50
-        }
-      ></CardItemSvgImage>
-    </Background>
-    {children}
-  </Container>
-);
+}> = ({ isVisa, children }) => {
+  const backgroundColor = useCardColor(isVisa, 'lighter');
+  const svgColor = useCardColor(isVisa, 'darker');
+  return (
+    <Container>
+      <Background backgroundColor={backgroundColor}>
+        <CardItemSvgImage
+          fill={svgColor}
+        ></CardItemSvgImage>
+      </Background>
+      {children}
+    </Container>
+  );
+};
 
 const CardItemSvgImage = ({ fill }) => (
   <svg fill={fill} height="100%" viewBox="0 0 257 184">
@@ -32,10 +32,7 @@ const CardItemSvgImage = ({ fill }) => (
 const Background = styled.div`
   width: 100%;
   height: 100%;
-  background-color: ${(props) =>
-    props.isVisa
-      ? CSS_COLORS.purple60
-      : CSS_COLORS.turquoise30};
+  background-color: ${(props) => props.backgroundColor};
   border-radius: ${CSS_BORDER_RADIUS.x2};
   padding: 0 0 0 20%;
   overflow: hidden;
@@ -53,7 +50,6 @@ const Container = styled.div`
   justify-content: space-between;
   margin: ${CSS_SPACINGS.x4};
   display: flex;
-  font-weight: bold;
   padding: ${CSS_SPACINGS.x5};
   z-index: 0;
 `;

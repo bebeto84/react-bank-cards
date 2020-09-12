@@ -2,12 +2,12 @@ import { CardItem } from '@sdk/cards/card-item.model';
 import styled from 'styled-components';
 import {
   CSS_SPACINGS,
-  CSS_BORDER_RADIUS,
   CSS_COLORS,
   CSS_FONT_SIZES,
 } from '@styles/variables.styles';
 import { spaceWordOnCharacters } from '@utils/string';
 import CardItemWrapper from './CardItem.wrapper';
+import { isVisa } from '@utils/card';
 
 interface ICardItemComponent extends CardItem {
   onEditClick?: () => void;
@@ -20,12 +20,12 @@ const CardItemContainer = ({
   cvc,
   onEditClick,
 }: ICardItemComponent) => {
-  const isVisa = number?.startsWith('4');
   const isEditable = !!onEditClick;
+  const isCardVisa = isVisa(number);
   return (
-    <CardItemWrapper isVisa={isVisa}>
+    <CardItemWrapper isVisa={isCardVisa}>
       <Heading>
-        {isVisa ? <VisaLogo /> : <MasterCardLogo />}
+        {isCardVisa ? <VisaLogo /> : <MasterCardLogo />}
         <Cvc>
           <span className="heading-title">cvc</span>
           <span className="heading-value"> {cvc}</span>

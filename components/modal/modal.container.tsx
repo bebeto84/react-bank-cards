@@ -2,6 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { createModal } from '@utils/portal';
 import { motion } from 'framer-motion';
+import {
+  CSS_COLORS,
+  CSS_BORDER_RADIUS,
+} from '@styles/variables.styles';
 
 const ModalContainer = ({
   id,
@@ -25,13 +29,15 @@ const ModalContainer = ({
       }}
       positionTransition // auto animates the element when it's position changes
     >
-      <ModalWrapper>
-        <ModalHeader>
-          <ModalTitle>{title}</ModalTitle>
-          {closeIcon}
-        </ModalHeader>
-        {children}
-      </ModalWrapper>
+      <Container>
+        <ModalWrapper>
+          <ModalHeader>
+            <ModalTitle>{title}</ModalTitle>
+            {closeIcon}
+          </ModalHeader>
+          {children}
+        </ModalWrapper>
+      </Container>
     </Base>
   );
 
@@ -40,10 +46,24 @@ const ModalContainer = ({
 
 export default ModalContainer;
 
-const ModalWrapper = styled.div`
+const Container = styled.div`
+  overflow: hidden;
+  position: relative;
   width: 100vw;
   height: 85%;
-  background: white;
+  background: ${CSS_COLORS.white};
+
+  border-radius: ${CSS_BORDER_RADIUS.x2}
+    ${CSS_BORDER_RADIUS.x2} 0 0;
+`;
+const ModalWrapper = styled.div`
+  position: absolute;
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding-right: 17px;
+  box-sizing: content-box;
 `;
 
 const ModalHeader = styled.div`
@@ -51,7 +71,6 @@ const ModalHeader = styled.div`
   font-size: 0.6875rem;
   line-height: 1.2;
   letter-spacing: 0.1rem;
-  font-weight: bold;
   height: 3rem;
 `;
 
