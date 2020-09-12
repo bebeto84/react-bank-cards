@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { CardItem } from '@sdk/cards/card-item.model';
+import React, { useEffect, useState } from 'react';
+import { CardItem } from '@sdk/cards/card.model';
 import styled from 'styled-components';
 import ModalContainer from '@components/modal/modal.container';
 import { AnimatePresence } from 'framer-motion';
@@ -8,27 +8,26 @@ import CardItemContainer from './CardItem.container';
 import { CARD_DETAILS_MODAL_ID } from './cards.const';
 import CardDetailsContainer from './CardDetails.container';
 import { Button } from '@components/button/Button.component';
-
-const CARDS: CardItem[] = [
-  {
-    name: 'John Cabruci',
-    cvc: '009',
-    expiryDate: '08/21',
-    number: '553412312312312312',
-  },
-  {
-    name: 'John Cabruci',
-    cvc: '009',
-    expiryDate: '12/24',
-    number: '4923123188922381',
-  },
-];
+import { CardSelector } from '@sdk/cards/card.selector';
+import { useSelector, useDispatch } from 'react-redux';
+import { CardActions } from '@sdk/cards/card.action';
 
 export function CardsMainContainer() {
   // TODO: use redux to manage `cards`
-  const [cards, setCards] = useState(CARDS);
+  const cards = CardSelector.getAll();
+  const dispatch = useDispatch();
+
   const [modalOpened, setOpenModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+
+  // Note: This is not useful now, but most likely this is one of the best places to retrieve the data from Backend
+  useEffect(() => {
+    dispatch(CardActions.getAll());
+  }, []);
+
+  useEffect(() => {
+    setOpenModal(false);
+  }, [cards]);
 
   const closeDialog = () => {
     setSelectedCard(null);
@@ -73,6 +72,7 @@ export function CardsMainContainer() {
             }
           >
             <CardDetailsContainer
+              isEditionMode={!selectedCard}
               {...selectedCard}
             ></CardDetailsContainer>
           </ModalContainer>

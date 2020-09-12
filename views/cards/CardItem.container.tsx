@@ -1,4 +1,4 @@
-import { CardItem } from '@sdk/cards/card-item.model';
+import { CardItem } from '@sdk/cards/card.model';
 import styled from 'styled-components';
 import {
   CSS_SPACINGS,

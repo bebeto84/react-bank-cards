@@ -1,4 +1,4 @@
-import { CardItem } from '@sdk/cards/card-item.model';
+import { CardItem } from '@sdk/cards/card.model';
 import styled from 'styled-components';
 import { FunctionComponent, useState } from 'react';
 import InputFieldComponent from '@components/input-field/InputFileld.component';
@@ -6,24 +6,25 @@ import { spaceWordOnCharacters } from '@utils/string';
 import { Button } from '@components/button/Button.component';
 import CardItemContainer from './CardItem.container';
 import { CSS_SPACINGS } from '@styles/variables.styles';
+import { CardActions } from '@sdk/cards/card.action';
+import { useDispatch } from 'react-redux';
 
-const CardDetailsContainer: FunctionComponent<CardItem> = ({
-  name,
-  number,
-  expiryDate,
-  cvc,
-  children,
-}) => {
+const CardDetailsContainer: FunctionComponent<
+  CardItem & { isEditionMode: boolean }
+> = ({ name, number, expiryDate, cvc, isEditionMode }) => {
   const [formValue, setFormValue] = useState({
     name,
     number,
     expiryDate,
     cvc,
+    isEditionMode,
   });
-  const formatNumber = (word) =>
-    spaceWordOnCharacters(word, 4);
+  const dispatch = useDispatch();
 
-  const handleSubmit = () => {};
+  const addCard = () =>
+    isEditionMode
+      ? dispatch(CardActions.update(formValue))
+      : dispatch(CardActions.add(formValue));
 
   const updateFormValue = (prop: keyof CardItem, value) => {
     setFormValue({
@@ -46,7 +47,6 @@ const CardDetailsContainer: FunctionComponent<CardItem> = ({
         <InputFieldComponent
           name="Card number"
           value={formValue.number}
-          formatFn={formatNumber}
           onUpdated={(value) =>
             updateFormValue('number', value)
           }
@@ -76,10 +76,8 @@ const CardDetailsContainer: FunctionComponent<CardItem> = ({
         ></InputFieldComponent>
       </Form>
       <Actions>
-        <Button onClick={handleSubmit}>Confirm</Button>
-        <Button disabled onClick={handleSubmit}>
-          Delete card
-        </Button>
+        <Button onClick={addCard}>Confirm</Button>
+        <Button disabled>Delete card</Button>
       </Actions>
     </Container>
   );
