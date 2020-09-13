@@ -22,6 +22,7 @@ export interface Form<T extends object> {
   isValid?: boolean;
   controls: InputField[];
   formValue: T;
+  isInitialized?: boolean;
   onSubmit: () => void;
   markAsTouched?: () => void;
   updated?: (value: T) => void;
@@ -44,6 +45,19 @@ class FormContainer<
 
   submit(ev) {
     ev.preventDefault();
+
+    if (this.validate() && this.props.onSubmit) {
+      this.props.onSubmit();
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.isInitialized) {
+      this.markWithValue();
+    }
+  }
+
+  validate() {
     let isValid = true;
     this.state.inputRefs.forEach(({ current }) => {
       current.validate();
@@ -52,9 +66,13 @@ class FormContainer<
       }
     });
 
-    if (isValid && this.props.onSubmit) {
-      this.props.onSubmit();
-    }
+    return isValid;
+  }
+
+  markWithValue() {
+    this.state.inputRefs.forEach(({ current }) =>
+      current.markWithValue()
+    );
   }
 
   render() {

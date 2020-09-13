@@ -22,9 +22,6 @@ export default function Home() {
           <CardsMainContainer></CardsMainContainer>
         </main>
 
-        <footer>
-          <img src="/casumo-logo.svg" alt="Casumo Logo" />
-        </footer>
         <div id="portal"></div>
       </div>
     </Provider>

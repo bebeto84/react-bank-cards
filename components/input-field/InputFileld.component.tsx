@@ -128,6 +128,18 @@ class InputFieldComponent extends React.Component<
     this.toggleValidationClasses(isValid);
   }
 
+  markWithValue() {
+    let { classes } = this.state;
+
+    classes = ArrayUtils.toggleItem(
+      classes,
+      HAS_VALUE_CLASS,
+      true
+    );
+
+    this.setState({ classes });
+  }
+
   render() {
     return (
       <Container
@@ -183,6 +195,7 @@ class InputFieldComponent extends React.Component<
         true
       );
     }
+    this.setState({ classes });
 
     classes = ArrayUtils.toggleItem(
       classes,

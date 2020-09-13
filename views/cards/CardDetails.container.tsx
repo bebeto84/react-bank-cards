@@ -18,7 +18,8 @@ class CardDetailsContainer extends React.Component<
   CardItemDetails,
   CardDetailsState
 > {
-  /*   dispatch = useDispatch(); */
+  controls: InputField[] = this.generateControls();
+
   constructor(props: CardItemDetails) {
     super(props);
     this.state = {
@@ -26,11 +27,11 @@ class CardDetailsContainer extends React.Component<
       cvc: this.props.cvc,
       expiryDate: this.props.expiryDate,
       number: this.props.number,
+      id: this.props.id,
     };
   }
 
   submitCard() {
-    debugger;
     store.dispatch(
       this.props.isEditionMode
         ? CardActions.update(this.state)
@@ -42,39 +43,6 @@ class CardDetailsContainer extends React.Component<
     this.setState(card);
   };
 
-  controls: InputField[] = [
-    {
-      label: 'Name in card',
-      name: 'name',
-      value: this.props.name,
-      isRequired: true,
-    },
-    {
-      name: 'number',
-      label: 'Card number',
-      value: this.props.number,
-      isRequired: true,
-      maxLength: 16,
-      type: 'number',
-    },
-    {
-      name: 'expiryDate',
-      label: 'Expiracy date',
-      value: this.props.expiryDate,
-      isRequired: true,
-      maxLength: 5,
-      pattern: '^(0[1-9]|1[0-2])/([0-9]{2})$',
-    },
-    {
-      name: 'cvc',
-      label: 'CVC (Security code)',
-      value: this.props.cvc,
-      isRequired: true,
-      maxLength: 3,
-      type: 'number',
-    },
-  ];
-
   render() {
     return (
       <Container>
@@ -85,6 +53,7 @@ class CardDetailsContainer extends React.Component<
           controls={this.controls}
           formValue={this.state}
           updated={this.updateCardValue}
+          isInitialized={this.props.isEditionMode}
           onSubmit={() => this.submitCard()}
         ></FormContainer>
         <Actions>
@@ -92,6 +61,41 @@ class CardDetailsContainer extends React.Component<
         </Actions>
       </Container>
     );
+  }
+
+  private generateControls(): InputField[] {
+    return [
+      {
+        label: 'Name in card',
+        name: 'name',
+        value: this.props.name,
+        isRequired: true,
+      },
+      {
+        name: 'number',
+        label: 'Card number',
+        value: this.props.number,
+        isRequired: true,
+        maxLength: 16,
+        type: 'number',
+      },
+      {
+        name: 'expiryDate',
+        label: 'Expiracy date',
+        value: this.props.expiryDate,
+        isRequired: true,
+        maxLength: 5,
+        pattern: '^(0[1-9]|1[0-2])/([0-9]{2})$',
+      },
+      {
+        name: 'cvc',
+        label: 'CVC (Security code)',
+        value: this.props.cvc,
+        isRequired: true,
+        maxLength: 3,
+        type: 'number',
+      },
+    ];
   }
 }
 
