@@ -1,6 +1,5 @@
 import store from '@sdk/store';
 import Head from 'next/head';
-import styled from 'styled-components';
 import { CardsMainContainer } from 'views/cards/CardsMain.container';
 import { Provider } from 'react-redux';
 

@@ -3,11 +3,14 @@ import {
   CSS_COLORS,
   CSS_BORDER_RADIUS,
   CSS_SPACINGS,
+  CSS_FONT_SIZES,
 } from '@styles/variables.styles';
 
 export const Button = styled.button`
   background-color: ${CSS_COLORS.purple};
   border-radius: ${CSS_BORDER_RADIUS.x3};
+  font-weight: bold;
+  font-size: ${CSS_FONT_SIZES.x3};
   width: 70%;
   max-width: 400px;
   color: ${CSS_COLORS.white};

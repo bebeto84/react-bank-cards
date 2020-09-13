@@ -1,87 +1,101 @@
 import { CardItem } from '@sdk/cards/card.model';
 import styled from 'styled-components';
-import { FunctionComponent, useState } from 'react';
-import InputFieldComponent from '@components/input-field/InputFileld.component';
-import { spaceWordOnCharacters } from '@utils/string';
+import React from 'react';
 import { Button } from '@components/button/Button.component';
 import CardItemContainer from './CardItem.container';
 import { CSS_SPACINGS } from '@styles/variables.styles';
 import { CardActions } from '@sdk/cards/card.action';
-import { useDispatch } from 'react-redux';
+import FormContainer from '@components/fom/Form.container';
+import { InputField } from '@components/input-field/InputFileld.component';
+import store from '@sdk/store';
 
-const CardDetailsContainer: FunctionComponent<
-  CardItem & { isEditionMode: boolean }
-> = ({ name, number, expiryDate, cvc, isEditionMode }) => {
-  const [formValue, setFormValue] = useState({
-    name,
-    number,
-    expiryDate,
-    cvc,
-    isEditionMode,
-  });
-  const dispatch = useDispatch();
-
-  const addCard = () =>
-    isEditionMode
-      ? dispatch(CardActions.update(formValue))
-      : dispatch(CardActions.add(formValue));
-
-  const updateFormValue = (prop: keyof CardItem, value) => {
-    setFormValue({
-      ...formValue,
-      ...{ [prop]: value },
-    });
-  };
-  return (
-    <Container>
-      <CardItemContainer {...formValue}></CardItemContainer>
-      <Form>
-        <InputFieldComponent
-          name="Name in card"
-          value={formValue.name}
-          onUpdated={(value) =>
-            updateFormValue('name', value)
-          }
-          isRequired
-        ></InputFieldComponent>
-        <InputFieldComponent
-          name="Card number"
-          value={formValue.number}
-          onUpdated={(value) =>
-            updateFormValue('number', value)
-          }
-          maxLength={16}
-          isRequired
-          type="number"
-        ></InputFieldComponent>
-        <InputFieldComponent
-          name="Expiracy date"
-          value={formValue.expiryDate}
-          onUpdated={(value) =>
-            updateFormValue('expiryDate', value)
-          }
-          pattern="^[0-9/]*$"
-          maxLength={5}
-          isRequired
-        ></InputFieldComponent>
-        <InputFieldComponent
-          name="CVC (Security code)"
-          value={formValue.cvc}
-          onUpdated={(value) =>
-            updateFormValue('cvc', value)
-          }
-          isRequired
-          maxLength={3}
-          type="number"
-        ></InputFieldComponent>
-      </Form>
-      <Actions>
-        <Button onClick={addCard}>Confirm</Button>
-        <Button disabled>Delete card</Button>
-      </Actions>
-    </Container>
-  );
+type CardItemDetails = CardItem & {
+  isEditionMode: boolean;
 };
+
+interface CardDetailsState extends CardItem {}
+class CardDetailsContainer extends React.Component<
+  CardItemDetails,
+  CardDetailsState
+> {
+  /*   dispatch = useDispatch(); */
+  constructor(props: CardItemDetails) {
+    super(props);
+    this.state = {
+      name: this.props.name,
+      cvc: this.props.cvc,
+      expiryDate: this.props.expiryDate,
+      number: this.props.number,
+    };
+  }
+
+  submitCard() {
+    debugger;
+    store.dispatch(
+      this.props.isEditionMode
+        ? CardActions.update(this.state)
+        : CardActions.add(this.state)
+    );
+  }
+
+  updateCardValue = (card: CardItem) => {
+    this.setState(card);
+  };
+
+  controls: InputField[] = [
+    {
+      label: 'Name in card',
+      name: 'name',
+      value: this.props.name,
+      isRequired: true,
+    },
+    {
+      name: 'number',
+      label: 'Card number',
+      value: this.props.number,
+      isRequired: true,
+      maxLength: 16,
+      type: 'number',
+    },
+    {
+      name: 'expiryDate',
+      label: 'Expiracy date',
+      value: this.props.expiryDate,
+      isRequired: true,
+      maxLength: 5,
+      pattern: '^(0[1-9]|1[0-2])/([0-9]{2})$',
+    },
+    {
+      name: 'cvc',
+      label: 'CVC (Security code)',
+      value: this.props.cvc,
+      isRequired: true,
+      maxLength: 3,
+      type: 'number',
+    },
+  ];
+
+  render() {
+    return (
+      <Container>
+        <CardItemContainer
+          {...this.state}
+        ></CardItemContainer>
+        <FormContainer<CardItem>
+          controls={this.controls}
+          formValue={this.state}
+          updated={this.updateCardValue}
+          onSubmit={() => this.submitCard()}
+        ></FormContainer>
+        <Actions>
+          <Button disabled>Delete card</Button>
+        </Actions>
+      </Container>
+    );
+  }
+}
+
+export default CardDetailsContainer;
 
 const Container = styled.div`
   display: flex;
@@ -89,11 +103,6 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   padding: ${CSS_SPACINGS.x2} ${CSS_SPACINGS.x3};
-  z-index: 10;
-`;
-
-const Form = styled.form`
-  width: 80%;
 `;
 
 const Actions = styled.section`
@@ -104,5 +113,3 @@ const Actions = styled.section`
   align-items: center;
   width: 80%;
 `;
-
-export default CardDetailsContainer;
